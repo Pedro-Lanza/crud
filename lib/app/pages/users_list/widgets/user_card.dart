@@ -40,7 +40,7 @@ class UserCard extends StatelessWidget {
                         ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [const SizedBox(height: 20), Text("${user!.name} ${user!.surName}"), SizedBox(height: 60, child: Text('description'))],
+                    children: [const SizedBox(height: 20), Text("${user!.name} ${user!.surName}"), const SizedBox(height: 60, child: Text(''))],
                   ),
                   Text("${user!.id}"),
                 ],
