@@ -13,10 +13,10 @@ class DetailsDatabase {
   }
 
   void deleteDetails(int index) {
-    getDetailsBox().deleteAt(index);
+    getDetailsBox().delete(index);
   }
 
   List<Details> getDetails() => getDetailsBox().values.toList();
 
-  Details? getByUser(int id) => getDetailsBox().get(id);
+  Details? getByUser(int id) => getDetails().where((e) => e.user == id).toList()[0];
 }

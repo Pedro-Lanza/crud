@@ -9,13 +9,24 @@ class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DetailsProvider details = Provider.of(context);
-    final PostProvider posts = Provider.of(context, listen: false);
+    final PostProvider posts = Provider.of(context, listen: true);
     final user = ModalRoute.of(context)!.settings.arguments as User?;
     final detail = details.getByUser(user!.id!);
     // List<Post> ps
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              posts.addPost(
+                Post(id: posts.count, detail: detail!.id!, content: 'new post'),
+              );
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
       body: ListView(
         children: [
           Card(
@@ -71,7 +82,7 @@ class UserProfile extends StatelessWidget {
           const SizedBox(height: 30),
           const Align(child: Text('Posts', style: TextStyle(fontSize: 40))),
           Column(
-            children: posts.getByUser(detail?.id).map<Widget>(
+            children: posts.getByUser(detail.id).map<Widget>(
               (e) {
                 return Container(
                   constraints: const BoxConstraints(minHeight: 100, minWidth: double.infinity),
@@ -87,20 +98,7 @@ class UserProfile extends StatelessWidget {
                 );
               },
             ).toList(),
-          )
-          // ListView.builder(itemBuilder: (ctx, i) {
-          //   return Container(
-          //     constraints: const BoxConstraints(minHeight: 100, minWidth: double.infinity),
-          //     child: Card(
-          //         child: Padding(
-          //       padding: EdgeInsets.all(8.0),
-          //       child: Text(
-          //         posts.getByUser(detail?.id)[i].content,
-          //         textAlign: TextAlign.center,
-          //       ),
-          //     )),
-          //   );
-          // })
+          ),
         ],
       ),
     );

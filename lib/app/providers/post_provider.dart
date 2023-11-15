@@ -7,6 +7,8 @@ class PostProvider with ChangeNotifier {
 
   List<Post> get posts => db.getPosts();
 
+  int get count => db.getPosts().length;
+
   void addPost(Post post) {
     db.addPost(post);
     notifyListeners();
@@ -24,5 +26,11 @@ class PostProvider with ChangeNotifier {
 
   List<Post> getByUser(int? id) {
     return db.getPostsByUser(id);
+  }
+
+  void deleteByUser(int? id) {
+    for (Post p in getByUser(id)) {
+      db.deletePost(p.id!);
+    }
   }
 }

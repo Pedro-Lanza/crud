@@ -15,13 +15,15 @@ void main() async {
   Hive.init(appDocumentDirectory.path);
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(DetailsAdapter());
+  Hive.registerAdapter(PostAdapter());
 
   var userbox = await Hive.openBox<User>('users');
   var detailsbox = await Hive.openBox<Details>('details');
-  await Hive.openBox<Post>('posts');
+  var postbox = await Hive.openBox<Post>('posts');
 
   userbox.clear();
   detailsbox.clear();
+  postbox.clear();
 
   // String path = Directory.current.path;
   // await BoxCollection.open(

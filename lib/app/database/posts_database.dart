@@ -5,15 +5,15 @@ class PostsDatabase {
   Box<Post> getPostBox() => Hive.box('posts');
 
   void addPost(Post post) {
-    getPostBox().add(post);
+    getPostBox().put(post.id, post);
   }
 
-  void updatePost(int index, Post post) {
-    getPostBox().putAt(index, post);
+  void updatePost(int id, Post post) {
+    getPostBox().putAt(id, post);
   }
 
-  void deletePost(int index) {
-    getPostBox().deleteAt(index);
+  void deletePost(int id) {
+    getPostBox().delete(id);
   }
 
   List<Post> getPosts() => getPostBox().values.toList();

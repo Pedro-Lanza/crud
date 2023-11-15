@@ -23,7 +23,7 @@ class _UserFormState extends State<UserForm> {
     final DetailsProvider details = Provider.of(context, listen: false);
 
     if (user == null) {
-      formData['id'] = users.count;
+      formData['id'] = users.maxid;
       formData['image'] = 'https://i.pinimg.com/736x/70/3f/cd/703fcdbe33b1176f9e9db8fb7ce9950a.jpg';
       formData['private'] = false;
       return;
@@ -155,6 +155,7 @@ class _UserFormState extends State<UserForm> {
                 onPressed: () {
                   if (!formKey.currentState!.validate()) return;
                   formKey.currentState!.save();
+                  print('formdata[id]: ${formData['id']}');
                   Details detail = Details(
                     id: formData['id'],
                     user: formData['id'],

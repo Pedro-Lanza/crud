@@ -18,10 +18,6 @@ class UserList extends StatelessWidget {
           IconButton(
             onPressed: () {
               Navigator.of(context).pushNamed(AppRoutes.form, arguments: null);
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => UserForm()),
-              // );
             },
             icon: const Icon(Icons.add),
           )
@@ -29,7 +25,7 @@ class UserList extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: users.count,
-        itemBuilder: (ctx, i) => UserCard(user: users.getById(i)),
+        itemBuilder: (ctx, i) => UserCard(user: users.userlist.elementAt(i)),
       ),
     );
   }

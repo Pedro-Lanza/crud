@@ -10,11 +10,11 @@ class UserDatabase {
   }
 
   void updateUser(int id, User user) {
-    getUserBox().putAt(id, user);
+    getUserBox().put(id, user);
   }
 
   void deleteUser(int index) {
-    getUserBox().deleteAt(index);
+    getUserBox().delete(index);
   }
 
   List<User> getUsers() => getUserBox().values.toList();
