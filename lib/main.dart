@@ -21,9 +21,9 @@ void main() async {
   var detailsbox = await Hive.openBox<Details>('details');
   var postbox = await Hive.openBox<Post>('posts');
 
-  userbox.clear();
-  detailsbox.clear();
-  postbox.clear();
+  // userbox.clear();
+  // detailsbox.clear();
+  // postbox.clear();
 
   // String path = Directory.current.path;
   // await BoxCollection.open(

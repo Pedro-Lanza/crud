@@ -10,6 +10,7 @@ class UserList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserProvider users = Provider.of(context, listen: true);
+    users.init();
 
     return Scaffold(
       appBar: AppBar(

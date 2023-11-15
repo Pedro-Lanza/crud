@@ -10,6 +10,10 @@ class UserProvider with ChangeNotifier {
   List<User> userList = [];
   int maxId = 0;
 
+  void init() {
+    userList = db.getUsers();
+  }
+
   List<User> get users => db.getUsers();
 
   List<User> get userlist => userList;
