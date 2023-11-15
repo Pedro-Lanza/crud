@@ -1,8 +1,19 @@
+import 'package:crud/app/models/posts_entity.dart';
+import 'package:crud/app/models/user_entity.dart';
+import 'package:crud/app/providers/details_provider.dart';
+import 'package:crud/app/providers/post_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final DetailsProvider details = Provider.of(context);
+    final PostProvider posts = Provider.of(context, listen: false);
+    final user = ModalRoute.of(context)!.settings.arguments as User?;
+    final detail = details.getByUser(user!.id!);
+    // List<Post> ps
+
     return Scaffold(
       appBar: AppBar(),
       body: ListView(
@@ -18,20 +29,20 @@ class UserProfile extends StatelessWidget {
                     child: Icon(Icons.person, size: 200),
                   ),
                   const SizedBox(height: 40),
-                  const Text('nome sobrenome', style: TextStyle(fontSize: 20)),
+                  Text('${user.name} ${user.surName}', style: const TextStyle(fontSize: 20)),
                   const SizedBox(height: 20),
-                  const Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                  Text(
+                    '${detail?.description}',
                     textAlign: TextAlign.justify,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Birth: 10/10/1010'),
+                      Text('Birth: ${detail?.birth}'),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          children: [const Text('Private: '), Checkbox(value: false, onChanged: (val) {})],
+                          children: [const Text('Private: '), Checkbox(value: detail!.private, onChanged: (val) {})],
                         ),
                       )
                     ],
@@ -40,19 +51,19 @@ class UserProfile extends StatelessWidget {
               ),
             ),
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Card(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("followers: 0"),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("followers: ${detail?.followers}"),
                 ),
               ),
               Card(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("following: 0"),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("following: ${detail?.following}"),
                 ),
               ),
             ],
@@ -60,42 +71,36 @@ class UserProfile extends StatelessWidget {
           const SizedBox(height: 30),
           const Align(child: Text('Posts', style: TextStyle(fontSize: 40))),
           Column(
-            children: [
-              Container(
-                constraints: BoxConstraints(minHeight: 100, minWidth: double.infinity),
-                child: const Card(
+            children: posts.getByUser(detail?.id).map<Widget>(
+              (e) {
+                return Container(
+                  constraints: const BoxConstraints(minHeight: 100, minWidth: double.infinity),
+                  child: Card(
                     child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Post',
-                    textAlign: TextAlign.center,
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        e.content,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
-                )),
-              ),
-              Container(
-                constraints: BoxConstraints(minHeight: 100, minWidth: double.infinity),
-                child: const Card(
-                    child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Post',
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-              ),
-              Container(
-                constraints: BoxConstraints(minHeight: 100, minWidth: double.infinity),
-                child: const Card(
-                    child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Post',
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-              ),
-            ],
+                );
+              },
+            ).toList(),
           )
+          // ListView.builder(itemBuilder: (ctx, i) {
+          //   return Container(
+          //     constraints: const BoxConstraints(minHeight: 100, minWidth: double.infinity),
+          //     child: Card(
+          //         child: Padding(
+          //       padding: EdgeInsets.all(8.0),
+          //       child: Text(
+          //         posts.getByUser(detail?.id)[i].content,
+          //         textAlign: TextAlign.center,
+          //       ),
+          //     )),
+          //   );
+          // })
         ],
       ),
     );

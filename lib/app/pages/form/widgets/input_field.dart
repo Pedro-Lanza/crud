@@ -7,16 +7,19 @@ class InputField extends StatelessWidget {
     this.icon,
     required this.hint,
     this.onSaved,
+    this.initialValue,
   });
 
   final String label;
   final String hint;
   final Icon? icon;
+  final initialValue;
   final onSaved;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialValue,
       validator: (val) {
         if (val == null || val.isEmpty) return 'Campo obrigatório';
         return null;

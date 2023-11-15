@@ -1,15 +1,58 @@
+import 'package:crud/app/models/details_entity.dart';
+import 'package:crud/app/models/user_entity.dart';
 import 'package:crud/app/pages/form/widgets/input_field.dart';
+import 'package:crud/app/providers/details_provider.dart';
+import 'package:crud/app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-class UserForm extends StatelessWidget {
+class UserForm extends StatefulWidget {
+  @override
+  State<UserForm> createState() => _UserFormState();
+}
+
+class _UserFormState extends State<UserForm> {
   //UserForm({super.key});
   final formKey = GlobalKey<FormState>();
+
   final Map<String, dynamic> formData = {};
+
+  void _loadFormData(User? user) {
+    final UserProvider users = Provider.of(context, listen: false);
+    final DetailsProvider details = Provider.of(context, listen: false);
+
+    if (user == null) {
+      formData['id'] = users.count;
+      formData['image'] = 'https://i.pinimg.com/736x/70/3f/cd/703fcdbe33b1176f9e9db8fb7ce9950a.jpg';
+      formData['private'] = false;
+      return;
+    }
+
+    final detail = details.getByUser(user.id!);
+    formData['id'] = user.id;
+    formData['image'] = 'https://i.pinimg.com/736x/70/3f/cd/703fcdbe33b1176f9e9db8fb7ce9950a.jpg';
+    formData['name'] = user.name;
+    formData['surname'] = user.surName;
+    formData['description'] = detail!.description;
+    formData['birth'] = detail.birth;
+    formData['private'] = detail.private;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final user = ModalRoute.of(context)!.settings.arguments as User?;
+
+    _loadFormData(user);
+  }
 
   @override
   Widget build(BuildContext context) {
-    var txt = TextEditingController();
+    final UserProvider users = Provider.of(context, listen: false);
+    final DetailsProvider details = Provider.of(context, listen: false);
+    var txt = TextEditingController(text: formData['birth'] != null ? DateFormat("dd/MM/yyyy").format(formData['birth']) : null);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
@@ -27,6 +70,7 @@ class UserForm extends StatelessWidget {
                 children: [
                   Flexible(
                     child: InputField(
+                      initialValue: formData['name'],
                       onSaved: (val) {
                         formData['name'] = val;
                       },
@@ -38,6 +82,7 @@ class UserForm extends StatelessWidget {
                   const SizedBox(width: 10),
                   Flexible(
                     child: InputField(
+                      initialValue: formData['surname'],
                       onSaved: (val) {
                         formData['surname'] = val;
                       },
@@ -49,6 +94,7 @@ class UserForm extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               InputField(
+                initialValue: formData['description'],
                 onSaved: (val) {
                   formData['description'] = val;
                 },
@@ -96,7 +142,7 @@ class UserForm extends StatelessWidget {
                   const SizedBox(width: 10),
                   const Text("Private:"),
                   Checkbox(
-                    value: false,
+                    value: formData['private'],
                     onChanged: (val) {
                       formData['private'] = val;
                     },
@@ -109,6 +155,23 @@ class UserForm extends StatelessWidget {
                 onPressed: () {
                   if (!formKey.currentState!.validate()) return;
                   formKey.currentState!.save();
+                  Details detail = Details(
+                    id: formData['id'],
+                    user: formData['id'],
+                    description: formData['description'],
+                    birth: DateFormat('dd/MM/yyyy').parse(formData['birth']),
+                    private: formData['private'],
+                  );
+                  details.addDetails(detail);
+
+                  users.addUser(User(
+                    id: formData['id'],
+                    name: formData['name'],
+                    surName: formData['surname'],
+                    image: formData['image'],
+                    details: detail!.id!,
+                  ));
+                  Navigator.of(context).pop();
                 },
               ),
             ],
