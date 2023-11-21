@@ -19,6 +19,7 @@ class UserCard extends StatelessWidget {
         children: [
           Expanded(
             child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onTap: () {
                 Navigator.of(context).pushNamed(AppRoutes.details, arguments: user);
                 // Navigator.push(
