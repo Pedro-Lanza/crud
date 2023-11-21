@@ -1,4 +1,4 @@
-import 'package:crud/app/models/details_entity.dart';
+import 'package:crud/app/data/models/details_entity.dart';
 import 'package:hive/hive.dart';
 
 class DetailsDatabase {

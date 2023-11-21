@@ -1,5 +1,5 @@
 import 'package:crud/app/pages/users_list/widgets/user_card.dart';
-import 'package:crud/app/providers/user_provider.dart';
+import 'package:crud/app/data/providers/user_provider.dart';
 import 'package:crud/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

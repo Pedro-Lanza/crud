@@ -1,8 +1,9 @@
-import 'package:crud/app/models/posts_entity.dart';
-import 'package:crud/app/models/user_entity.dart';
-import 'package:crud/app/providers/details_provider.dart';
-import 'package:crud/app/providers/post_provider.dart';
+import 'package:crud/app/data/models/posts_entity.dart';
+import 'package:crud/app/data/models/user_entity.dart';
+import 'package:crud/app/data/providers/details_provider.dart';
+import 'package:crud/app/data/providers/post_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class UserProfile extends StatelessWidget {
@@ -30,9 +31,9 @@ class UserProfile extends StatelessWidget {
       body: ListView(
         children: [
           Card(
-            margin: EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(8.0),
             child: Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
                   const Align(
@@ -49,11 +50,18 @@ class UserProfile extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Birth: ${detail?.birth}'),
+                      Text('Birth: ${DateFormat("d/M/y").format(detail!.birth)}'),
+                      Text('Gender: ${detail.gender}'),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          children: [const Text('Private: '), Checkbox(value: detail!.private, onChanged: (val) {})],
+                          children: [
+                            const Text('Private: '),
+                            Checkbox(
+                              value: detail.private,
+                              onChanged: (val) {},
+                            ),
+                          ],
                         ),
                       )
                     ],
@@ -68,13 +76,13 @@ class UserProfile extends StatelessWidget {
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("followers: ${detail?.followers}"),
+                  child: Text("followers: ${detail.followers}"),
                 ),
               ),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("following: ${detail?.following}"),
+                  child: Text("following: ${detail.following}"),
                 ),
               ),
             ],

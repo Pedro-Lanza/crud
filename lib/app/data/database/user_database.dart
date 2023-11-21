@@ -1,4 +1,4 @@
-import 'package:crud/app/models/user_entity.dart';
+import 'package:crud/app/data/models/user_entity.dart';
 import 'package:hive/hive.dart';
 
 class UserDatabase {

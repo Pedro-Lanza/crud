@@ -1,6 +1,6 @@
-import 'package:crud/app/database/details_database.dart';
-import 'package:crud/app/models/details_entity.dart';
-import 'package:crud/app/providers/post_provider.dart';
+import 'package:crud/app/data/database/details_database.dart';
+import 'package:crud/app/data/models/details_entity.dart';
+import 'package:crud/app/data/providers/post_provider.dart';
 import 'package:flutter/material.dart';
 
 class DetailsProvider with ChangeNotifier {

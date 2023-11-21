@@ -1,7 +1,5 @@
-import 'package:crud/app/models/user_entity.dart';
-import 'package:crud/app/pages/details/user_profile.dart';
-import 'package:crud/app/pages/form/user_form.dart';
-import 'package:crud/app/providers/user_provider.dart';
+import 'package:crud/app/data/models/user_entity.dart';
+import 'package:crud/app/data/providers/user_provider.dart';
 import 'package:crud/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +29,8 @@ class UserCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  (user!.image == null || user!.image.isEmpty)
+                  // (user!.image == null || user!.image.isEmpty)
+                  (user!.image.isEmpty)
                       ? const CircleAvatar(
                           child: Icon(Icons.person),
                         )

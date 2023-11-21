@@ -1,8 +1,8 @@
-import 'package:crud/app/models/details_entity.dart';
-import 'package:crud/app/models/user_entity.dart';
+import 'package:crud/app/data/models/details_entity.dart';
+import 'package:crud/app/data/models/user_entity.dart';
 import 'package:crud/app/pages/form/widgets/input_field.dart';
-import 'package:crud/app/providers/details_provider.dart';
-import 'package:crud/app/providers/user_provider.dart';
+import 'package:crud/app/data/providers/details_provider.dart';
+import 'package:crud/app/data/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +15,7 @@ class UserForm extends StatefulWidget {
 class _UserFormState extends State<UserForm> {
   //UserForm({super.key});
   final formKey = GlobalKey<FormState>();
+  bool private = false;
 
   final Map<String, dynamic> formData = {};
 
@@ -102,6 +103,28 @@ class _UserFormState extends State<UserForm> {
                 hint: "Insira descrição",
               ),
               const SizedBox(height: 40),
+              DropdownButtonFormField(
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.horizontal(left: Radius.circular(10), right: Radius.circular(10)))),
+                hint: const Text("genero"),
+                validator: (val) {
+                  if (val == null || val.isEmpty) {
+                    return 'Campo obrigatório';
+                  }
+                  return null;
+                },
+                items: const [
+                  DropdownMenuItem(value: "nada a declarar", child: Text("nada a declarar")),
+                  DropdownMenuItem(value: "masculino", child: Text("masculino")),
+                  DropdownMenuItem(value: "feminino", child: Text("feminino")),
+                  DropdownMenuItem(value: "outro", child: Text("outro")),
+                ],
+                onChanged: (val) {},
+                onSaved: (val) {
+                  formData['gender'] = val;
+                },
+              ),
+              const SizedBox(height: 40),
               Row(
                 children: [
                   Flexible(
@@ -144,6 +167,9 @@ class _UserFormState extends State<UserForm> {
                   Checkbox(
                     value: formData['private'],
                     onChanged: (val) {
+                      setState(() {
+                        private = !private;
+                      });
                       formData['private'] = val;
                     },
                   )
@@ -162,6 +188,7 @@ class _UserFormState extends State<UserForm> {
                     description: formData['description'],
                     birth: DateFormat('dd/MM/yyyy').parse(formData['birth']),
                     private: formData['private'],
+                    gender: formData['gender'],
                   );
                   details.addDetails(detail);
 
@@ -170,7 +197,7 @@ class _UserFormState extends State<UserForm> {
                     name: formData['name'],
                     surName: formData['surname'],
                     image: formData['image'],
-                    details: detail!.id!,
+                    details: detail.id!,
                   ));
                   Navigator.of(context).pop();
                 },

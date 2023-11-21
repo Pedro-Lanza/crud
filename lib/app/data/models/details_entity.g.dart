@@ -22,6 +22,7 @@ class DetailsAdapter extends TypeAdapter<Details> {
       description: fields[2] as String,
       birth: fields[3] as DateTime,
       private: fields[4] as bool,
+      gender: fields[8] as String,
     )
       ..followers = fields[5] as int
       ..following = fields[6] as int
@@ -31,7 +32,7 @@ class DetailsAdapter extends TypeAdapter<Details> {
   @override
   void write(BinaryWriter writer, Details obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class DetailsAdapter extends TypeAdapter<Details> {
       ..writeByte(6)
       ..write(obj.following)
       ..writeByte(7)
-      ..write(obj.posts);
+      ..write(obj.posts)
+      ..writeByte(8)
+      ..write(obj.gender);
   }
 
   @override

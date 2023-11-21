@@ -1,8 +1,7 @@
-import 'package:crud/app/database/user_database.dart';
-import 'package:crud/app/models/user_entity.dart';
-import 'package:crud/app/providers/details_provider.dart';
+import 'package:crud/app/data/database/user_database.dart';
+import 'package:crud/app/data/models/user_entity.dart';
+import 'package:crud/app/data/providers/details_provider.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class UserProvider with ChangeNotifier {
   final UserDatabase db = UserDatabase();
@@ -63,7 +62,7 @@ class UserProvider with ChangeNotifier {
   void deleteUser(int index) {
     User? user = getById(index);
     if (user != null) {
-      db.deleteUser(user!.id!);
+      db.deleteUser(user.id!);
       details.deleteDetails(user.details);
       userList.removeAt(userList.indexWhere((e) => e.id == user.id));
       notifyListeners();

@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:crud/app/crud_app.dart';
-import 'package:crud/app/models/details_entity.dart';
-import 'package:crud/app/models/posts_entity.dart';
-import 'package:crud/app/models/user_entity.dart';
+import 'package:crud/app/data/models/details_entity.dart';
+import 'package:crud/app/data/models/posts_entity.dart';
+import 'package:crud/app/data/models/user_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -17,9 +15,13 @@ void main() async {
   Hive.registerAdapter(DetailsAdapter());
   Hive.registerAdapter(PostAdapter());
 
-  var userbox = await Hive.openBox<User>('users');
-  var detailsbox = await Hive.openBox<Details>('details');
-  var postbox = await Hive.openBox<Post>('posts');
+  await Hive.openBox<User>('users');
+  await Hive.openBox<Details>('details');
+  await Hive.openBox<Post>('posts');
+
+  // var userbox = await Hive.openBox<User>('users');
+  // var detailsbox = await Hive.openBox<Details>('details');
+  // var postbox = await Hive.openBox<Post>('posts');
 
   // userbox.clear();
   // detailsbox.clear();

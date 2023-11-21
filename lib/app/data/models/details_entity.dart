@@ -1,4 +1,3 @@
-import 'package:crud/app/models/posts_entity.dart';
 import 'package:hive/hive.dart';
 
 part 'details_entity.g.dart';
@@ -21,6 +20,8 @@ class Details extends HiveObject {
   int following = 0;
   @HiveField(7)
   List<int> posts = [];
+  @HiveField(8)
+  String gender;
 
   Details({
     this.id,
@@ -28,5 +29,6 @@ class Details extends HiveObject {
     required this.description,
     required this.birth,
     required this.private,
+    required this.gender,
   });
 }

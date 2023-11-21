@@ -1,4 +1,4 @@
-import 'package:crud/app/models/posts_entity.dart';
+import 'package:crud/app/data/models/posts_entity.dart';
 import 'package:hive/hive.dart';
 
 class PostsDatabase {

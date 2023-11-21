@@ -1,5 +1,5 @@
-import 'package:crud/app/database/posts_database.dart';
-import 'package:crud/app/models/posts_entity.dart';
+import 'package:crud/app/data/database/posts_database.dart';
+import 'package:crud/app/data/models/posts_entity.dart';
 import 'package:flutter/material.dart';
 
 class PostProvider with ChangeNotifier {
