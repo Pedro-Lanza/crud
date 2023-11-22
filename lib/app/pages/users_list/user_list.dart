@@ -10,7 +10,6 @@ class UserList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserProvider users = Provider.of(context, listen: true);
-    users.init();
 
     return Scaffold(
       appBar: AppBar(
@@ -24,10 +23,15 @@ class UserList extends StatelessWidget {
           )
         ],
       ),
-      body: ListView.builder(
-        itemCount: users.count,
-        itemBuilder: (ctx, i) => UserCard(user: users.userlist.elementAt(i)),
+      body: SingleChildScrollView(
+        child: Column(
+          children: users.users.map<Widget>((e) => UserCard(user: e)).toList(),
+        ),
       ),
+      // body: ListView.builder(
+      //   itemCount: users.count,
+      //   itemBuilder: (ctx, i) => UserCard(user: users.userlist.elementAt(i)),
+      // ),
     );
   }
 }

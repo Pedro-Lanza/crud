@@ -38,6 +38,7 @@ class _UserFormState extends State<UserForm> {
     formData['description'] = detail!.description;
     formData['birth'] = detail.birth;
     formData['private'] = detail.private;
+    formData['gender'] = detail.gender;
   }
 
   @override

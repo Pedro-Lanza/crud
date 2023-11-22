@@ -6,16 +6,9 @@ import 'package:flutter/material.dart';
 class UserProvider with ChangeNotifier {
   final UserDatabase db = UserDatabase();
   final DetailsProvider details = DetailsProvider();
-  List<User> userList = [];
   int maxId = 0;
 
-  void init() {
-    userList = db.getUsers();
-  }
-
   List<User> get users => db.getUsers();
-
-  List<User> get userlist => userList;
 
   int get maxid => maxId++;
 
@@ -23,7 +16,6 @@ class UserProvider with ChangeNotifier {
     if (id < 0) return null;
     // return db.getUserBox().get(id);
     List<User> list = users.where((e) => e.id == id).toList();
-    print('wtf: ${list}');
     return list.isEmpty ? null : list[0];
   }
 
@@ -34,7 +26,6 @@ class UserProvider with ChangeNotifier {
     if (user.id != null) {
       if (getById(user.id!) != null) {
         updateUser(user.id!, user);
-        userList[userList.indexWhere((e) => e.id == user.id)] = user;
         return;
       }
     }
@@ -47,7 +38,6 @@ class UserProvider with ChangeNotifier {
       details: user.details,
     );
     db.addUser(user);
-    userList.add(user);
     notifyListeners();
   }
 
@@ -64,7 +54,6 @@ class UserProvider with ChangeNotifier {
     if (user != null) {
       db.deleteUser(user.id!);
       details.deleteDetails(user.details);
-      userList.removeAt(userList.indexWhere((e) => e.id == user.id));
       notifyListeners();
     }
   }
