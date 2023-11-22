@@ -51,7 +51,6 @@ class UserProfile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Birth: ${DateFormat("d/M/y").format(detail!.birth)}'),
-                      Text('Gender: ${detail.gender}'),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -63,9 +62,10 @@ class UserProfile extends StatelessWidget {
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
+                  Align(alignment: Alignment.centerLeft, child: Text('Gender: ${detail.gender}')),
                 ],
               ),
             ),
