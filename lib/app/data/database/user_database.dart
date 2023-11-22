@@ -5,7 +5,6 @@ class UserDatabase {
   Box<User> getUserBox() => Hive.box('users');
 
   void addUser(User user) {
-    print('here:${user.id}');
     getUserBox().put(user.id!, user);
   }
 

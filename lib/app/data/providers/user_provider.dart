@@ -22,7 +22,6 @@ class UserProvider with ChangeNotifier {
   int get count => db.getUsers().length;
 
   void addUser(User user) {
-    print('add user id: ${user.id}');
     if (user.id != null) {
       if (getById(user.id!) != null) {
         updateUser(user.id!, user);
