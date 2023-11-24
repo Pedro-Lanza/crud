@@ -4,15 +4,26 @@ import 'package:crud/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UserCard extends StatelessWidget {
-  final User? user;
+class UserCard extends StatefulWidget {
+  final User user;
 
   const UserCard({super.key, required this.user});
 
   @override
-  Widget build(BuildContext context) {
-    final UserProvider users = Provider.of(context, listen: false);
+  State<UserCard> createState() => _UserCardState();
+}
 
+class _UserCardState extends State<UserCard> {
+  late UserProvider users;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    users = Provider.of(context, listen: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -21,7 +32,7 @@ class UserCard extends StatelessWidget {
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
-                Navigator.of(context).pushNamed(AppRoutes.details, arguments: user);
+                Navigator.of(context).pushNamed(AppRoutes.details, arguments: widget.user);
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(builder: (context) => UserProfile()),
@@ -31,18 +42,18 @@ class UserCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   // (user!.image == null || user!.image.isEmpty)
-                  (user!.image.isEmpty)
+                  (widget.user.image.isEmpty)
                       ? const CircleAvatar(
                           child: Icon(Icons.person),
                         )
                       : CircleAvatar(
-                          backgroundImage: NetworkImage(user!.image),
+                          backgroundImage: NetworkImage(widget.user.image),
                         ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [const SizedBox(height: 20), Text("${user!.name} ${user!.surName}"), const SizedBox(height: 60, child: Text(''))],
+                    children: [const SizedBox(height: 20), Text("${widget.user.name} ${widget.user.surName}"), const SizedBox(height: 60, child: Text(''))],
                   ),
-                  Text("${user!.id}"),
+                  Text("${widget.user.id}"),
                 ],
               ),
             ),
@@ -51,7 +62,7 @@ class UserCard extends StatelessWidget {
             children: [
               IconButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(AppRoutes.form, arguments: user);
+                    Navigator.of(context).pushNamed(AppRoutes.form, arguments: widget.user);
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(builder: (context) => UserForm()),
@@ -73,7 +84,7 @@ class UserCard extends StatelessWidget {
                         );
                       },
                     ).then((value) {
-                      if (value) users.deleteUser(user!.id!);
+                      if (value) users.deleteUser(widget.user.id!);
                     });
                   },
                   icon: const Icon(Icons.delete)),

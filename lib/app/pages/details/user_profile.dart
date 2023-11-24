@@ -6,15 +6,30 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
+  const UserProfile({super.key});
+
+  @override
+  State<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
+  late DetailsProvider details;
+  late PostProvider posts;
+  late var user;
+  late var detail;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    details = Provider.of(context);
+    posts = Provider.of(context, listen: true);
+    user = ModalRoute.of(context)!.settings.arguments as User?;
+    detail = details.getByUser(user!.id!);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final DetailsProvider details = Provider.of(context);
-    final PostProvider posts = Provider.of(context, listen: true);
-    final user = ModalRoute.of(context)!.settings.arguments as User?;
-    final detail = details.getByUser(user!.id!);
-    // List<Post> ps
-
     return Scaffold(
       appBar: AppBar(
         actions: [

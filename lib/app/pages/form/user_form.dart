@@ -19,10 +19,11 @@ class _UserFormState extends State<UserForm> {
 
   final Map<String, dynamic> formData = {};
 
-  void _loadFormData(User? user) {
-    final UserProvider users = Provider.of(context, listen: false);
-    final DetailsProvider details = Provider.of(context, listen: false);
+  late UserProvider users;
+  late DetailsProvider details;
+  late var txt;
 
+  void _loadFormData(User? user) {
     if (user == null) {
       formData['id'] = users.maxid;
       formData['image'] = 'https://i.pinimg.com/736x/70/3f/cd/703fcdbe33b1176f9e9db8fb7ce9950a.jpg';
@@ -44,17 +45,16 @@ class _UserFormState extends State<UserForm> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final user = ModalRoute.of(context)!.settings.arguments as User?;
+    users = Provider.of(context, listen: false);
+    details = Provider.of(context, listen: false);
+    final user = ModalRoute.of(context)!.settings.arguments as User;
 
     _loadFormData(user);
+    txt = TextEditingController(text: formData['birth'] != null ? DateFormat("dd/MM/yyyy").format(formData['birth']) : null);
   }
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider users = Provider.of(context, listen: false);
-    final DetailsProvider details = Provider.of(context, listen: false);
-    var txt = TextEditingController(text: formData['birth'] != null ? DateFormat("dd/MM/yyyy").format(formData['birth']) : null);
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
@@ -105,11 +105,12 @@ class _UserFormState extends State<UserForm> {
               ),
               const SizedBox(height: 40),
               DropdownButtonFormField(
+                value: formData['gender'],
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(borderRadius: BorderRadius.horizontal(left: Radius.circular(10), right: Radius.circular(10)))),
                 hint: const Text("genero"),
                 validator: (val) {
-                  if (val == null || val.isEmpty) {
+                  if (val == null) {
                     return 'Campo obrigatório';
                   }
                   return null;

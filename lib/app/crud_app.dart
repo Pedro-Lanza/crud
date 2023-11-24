@@ -26,7 +26,7 @@ class CrudApp extends StatelessWidget {
         routes: {
           AppRoutes.home: (_) => const UserList(),
           AppRoutes.form: (_) => UserForm(),
-          AppRoutes.details: (_) => UserProfile(),
+          AppRoutes.details: (_) => const UserProfile(),
         },
       ),
     );

@@ -4,13 +4,24 @@ import 'package:crud/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UserList extends StatelessWidget {
+class UserList extends StatefulWidget {
   const UserList({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final UserProvider users = Provider.of(context, listen: true);
+  State<UserList> createState() => _UserListState();
+}
 
+class _UserListState extends State<UserList> {
+  late UserProvider users;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    users = Provider.of(context, listen: true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("User Management"),
