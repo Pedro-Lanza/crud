@@ -26,14 +26,14 @@ class _UserFormState extends State<UserForm> {
   void _loadFormData(User? user) {
     if (user == null) {
       formData['id'] = users.maxid;
-      formData['image'] = 'https://i.pinimg.com/736x/70/3f/cd/703fcdbe33b1176f9e9db8fb7ce9950a.jpg';
+      formData['image'] = null;
       formData['private'] = false;
       return;
     }
 
     final detail = details.getByUser(user.id!);
     formData['id'] = user.id;
-    formData['image'] = 'https://i.pinimg.com/736x/70/3f/cd/703fcdbe33b1176f9e9db8fb7ce9950a.jpg';
+    formData['image'] = user.image;
     formData['name'] = user.name;
     formData['surname'] = user.surName;
     formData['description'] = detail!.description;
@@ -64,10 +64,19 @@ class _UserFormState extends State<UserForm> {
           key: formKey,
           child: Column(
             children: [
-              const Align(
+              Align(
                 alignment: Alignment.center,
-                child: Icon(Icons.person, size: 80),
+                child: (formData['image'] == null)
+                    ? const CircleAvatar(
+                        child: Icon(
+                          Icons.person,
+                        ),
+                      )
+                    : CircleAvatar(
+                        backgroundImage: NetworkImage(formData['image']),
+                      ),
               ),
+              const SizedBox(height: 30),
               Row(
                 children: [
                   Flexible(
@@ -203,7 +212,7 @@ class _UserFormState extends State<UserForm> {
                     id: formData['id'],
                     name: formData['name'],
                     surName: formData['surname'],
-                    image: formData['image'],
+                    image: 'https://i.pinimg.com/736x/70/3f/cd/703fcdbe33b1176f9e9db8fb7ce9950a.jpg',
                     details: detail.id!,
                   ));
                   Navigator.of(context).pop();

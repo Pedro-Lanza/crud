@@ -55,9 +55,22 @@ class _UserProfileState extends State<UserProfile> {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  const Align(
+                  Align(
                     alignment: Alignment.center,
-                    child: Icon(Icons.person, size: 200),
+                    child: (user.image == null)
+                        ? const CircleAvatar(
+                            child: Icon(
+                              Icons.person,
+                              size: 200,
+                            ),
+                          )
+                        : SizedBox(
+                            height: 200,
+                            width: 200,
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(user.image),
+                            ),
+                          ),
                   ),
                   const SizedBox(height: 40),
                   Text(
