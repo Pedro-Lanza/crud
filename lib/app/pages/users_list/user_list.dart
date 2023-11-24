@@ -28,7 +28,7 @@ class _UserListState extends State<UserList> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(AppRoutes.form, arguments: null);
+              Navigator.of(context).pushNamed(AppRoutes.form);
             },
             icon: const Icon(Icons.add),
           )

@@ -36,7 +36,11 @@ class _UserProfileState extends State<UserProfile> {
           IconButton(
             onPressed: () {
               posts.addPost(
-                Post(id: posts.count, detail: detail!.id!, content: 'new post'),
+                Post(
+                  id: posts.count,
+                  detail: detail!.id!,
+                  content: 'new post',
+                ),
               );
             },
             icon: const Icon(Icons.add),
@@ -56,7 +60,10 @@ class _UserProfileState extends State<UserProfile> {
                     child: Icon(Icons.person, size: 200),
                   ),
                   const SizedBox(height: 40),
-                  Text('${user.name} ${user.surName}', style: const TextStyle(fontSize: 20)),
+                  Text(
+                    '${user.name} ${user.surName}',
+                    style: const TextStyle(fontSize: 20),
+                  ),
                   const SizedBox(height: 20),
                   Text(
                     '${detail?.description}',
@@ -108,7 +115,10 @@ class _UserProfileState extends State<UserProfile> {
             children: posts.getByUser(detail.id).map<Widget>(
               (e) {
                 return Container(
-                  constraints: const BoxConstraints(minHeight: 100, minWidth: double.infinity),
+                  constraints: const BoxConstraints(
+                    minHeight: 100,
+                    minWidth: double.infinity,
+                  ),
                   child: Card(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),

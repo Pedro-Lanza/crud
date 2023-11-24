@@ -32,11 +32,10 @@ class _UserCardState extends State<UserCard> {
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
-                Navigator.of(context).pushNamed(AppRoutes.details, arguments: widget.user);
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => UserProfile()),
-                // );
+                Navigator.of(context).pushNamed(
+                  AppRoutes.details,
+                  arguments: widget.user,
+                );
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -51,7 +50,11 @@ class _UserCardState extends State<UserCard> {
                         ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [const SizedBox(height: 20), Text("${widget.user.name} ${widget.user.surName}"), const SizedBox(height: 60, child: Text(''))],
+                    children: [
+                      const SizedBox(height: 20),
+                      Text("${widget.user.name} ${widget.user.surName}"),
+                      const SizedBox(height: 60, child: Text('')),
+                    ],
                   ),
                   Text("${widget.user.id}"),
                 ],
@@ -62,34 +65,42 @@ class _UserCardState extends State<UserCard> {
             children: [
               IconButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(AppRoutes.form, arguments: widget.user);
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => UserForm()),
-                    // );
+                    Navigator.of(context).pushNamed(
+                      AppRoutes.form,
+                      arguments: widget.user,
+                    );
                   },
                   icon: const Icon(Icons.edit)),
               IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) {
-                        return AlertDialog(
-                          title: const Text('excluir usuário'),
-                          content: const Text('certeza?'),
-                          actions: [
-                            TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('não')),
-                            TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('sim')),
-                          ],
-                        );
-                      },
-                    ).then((value) {
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) {
+                      return AlertDialog(
+                        title: const Text('excluir usuário'),
+                        content: const Text('certeza?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: const Text('não'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(true),
+                            child: const Text('sim'),
+                          ),
+                        ],
+                      );
+                    },
+                  ).then(
+                    (value) {
                       if (value) users.deleteUser(widget.user.id!);
-                    });
-                  },
-                  icon: const Icon(Icons.delete)),
+                    },
+                  );
+                },
+                icon: const Icon(Icons.delete),
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

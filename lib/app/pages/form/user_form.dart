@@ -47,7 +47,7 @@ class _UserFormState extends State<UserForm> {
     super.didChangeDependencies();
     users = Provider.of(context, listen: false);
     details = Provider.of(context, listen: false);
-    final user = ModalRoute.of(context)!.settings.arguments as User;
+    final user = ModalRoute.of(context)!.settings.arguments as User?;
 
     _loadFormData(user);
     txt = TextEditingController(text: formData['birth'] != null ? DateFormat("dd/MM/yyyy").format(formData['birth']) : null);
@@ -107,7 +107,13 @@ class _UserFormState extends State<UserForm> {
               DropdownButtonFormField(
                 value: formData['gender'],
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(borderRadius: BorderRadius.horizontal(left: Radius.circular(10), right: Radius.circular(10)))),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.horizontal(
+                      left: Radius.circular(10),
+                      right: Radius.circular(10),
+                    ),
+                  ),
+                ),
                 hint: const Text("genero"),
                 validator: (val) {
                   if (val == null) {
@@ -174,7 +180,7 @@ class _UserFormState extends State<UserForm> {
                       });
                       formData['private'] = val;
                     },
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 30),

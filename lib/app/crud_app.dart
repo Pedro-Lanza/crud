@@ -20,7 +20,10 @@ class CrudApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => PostProvider()),
       ],
       child: MaterialApp(
-        theme: ThemeData(useMaterial3: true, colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent, brightness: Brightness.dark)),
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent, brightness: Brightness.dark),
+        ),
         debugShowCheckedModeBanner: false,
         home: const UserList(),
         routes: {
