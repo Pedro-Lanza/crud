@@ -1,14 +1,13 @@
-import 'package:crud/app/data/models/details_entity.dart';
 import 'package:hive/hive.dart';
 
 class DetailsDatabase {
-  Box<Details> getDetailsBox() => Hive.box('details');
+  Box<Map<dynamic, dynamic>> getDetailsBox() => Hive.box('details');
 
-  void addDetails(Details details) {
-    getDetailsBox().put(details.id, details);
+  void addDetails(Map<String, dynamic> details) {
+    getDetailsBox().put(details['id'], details);
   }
 
-  void updateDetails(int id, Details details) {
+  void updateDetails(int id, Map<String, dynamic> details) {
     getDetailsBox().put(id, details);
   }
 
@@ -16,7 +15,7 @@ class DetailsDatabase {
     getDetailsBox().delete(index);
   }
 
-  List<Details> getDetails() => getDetailsBox().values.toList();
+  List<Map<dynamic, dynamic>> getDetails() => getDetailsBox().values.toList();
 
-  Details? getByUser(int id) => getDetails().where((e) => e.user == id).toList()[0];
+  Map<dynamic, dynamic>? getByUser(int id) => getDetails().where((e) => e['user'] == id).toList()[0];
 }

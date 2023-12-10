@@ -1,31 +1,31 @@
-import 'package:crud/app/data/database/details_database.dart';
 import 'package:crud/app/data/models/details_entity.dart';
-import 'package:crud/app/data/providers/post_provider.dart';
+import 'package:crud/app/data/repository/details_repository.dart';
+import 'package:crud/app/data/repository/post_repository.dart';
 import 'package:flutter/material.dart';
 
 class DetailsProvider with ChangeNotifier {
-  final DetailsDatabase db = DetailsDatabase();
-  final PostProvider posts = PostProvider();
+  final DetailsRepository repository = DetailsRepository();
+  final PostRepository posts = PostRepository();
 
-  List<Details> get details => db.getDetails();
+  List<Details> get details => repository.fetchDetails();
 
   Details? getByUser(int id) {
-    return db.getByUser(id);
+    return repository.fetchByUser(id);
   }
 
   void addDetails(Details details) {
-    db.addDetails(details);
+    repository.addDetails(details);
     notifyListeners();
   }
 
   void updateDetails(int index, Details details) {
-    db.updateDetails(index, details);
+    repository.updateDetails(index, details);
     notifyListeners();
   }
 
   void deleteDetails(int id) {
     posts.deleteByUser(id);
-    db.deleteDetails(id);
+    repository.deleteDetails(id);
     notifyListeners();
   }
 }

@@ -1,19 +1,25 @@
 import 'package:crud/app/data/models/details_entity.dart';
 import 'package:crud/app/data/models/user_entity.dart';
+import 'package:crud/app/mask/input_masks.dart';
 import 'package:crud/app/pages/form/widgets/input_field.dart';
 import 'package:crud/app/data/providers/details_provider.dart';
 import 'package:crud/app/data/providers/user_provider.dart';
+import 'package:crud/app/validators/input_validators.dart';
+import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_validator/flutter_validator.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class UserForm extends StatefulWidget {
+  const UserForm({super.key});
+
   @override
   State<UserForm> createState() => _UserFormState();
 }
 
 class _UserFormState extends State<UserForm> {
-  //UserForm({super.key});
+  final validator = const Validator();
   final formKey = GlobalKey<FormState>();
   bool private = false;
 
@@ -28,6 +34,7 @@ class _UserFormState extends State<UserForm> {
       formData['id'] = users.maxid;
       formData['image'] = null;
       formData['private'] = false;
+      formData['gender'] = 'nada a declarar';
       return;
     }
 
@@ -40,6 +47,8 @@ class _UserFormState extends State<UserForm> {
     formData['birth'] = detail.birth;
     formData['private'] = detail.private;
     formData['gender'] = detail.gender;
+    formData['cpf'] = detail.cpf;
+    formData['telefone'] = detail.telefone;
   }
 
   @override
@@ -112,6 +121,28 @@ class _UserFormState extends State<UserForm> {
                 label: "Descrição",
                 hint: "Insira descrição",
               ),
+              const SizedBox(height: 20),
+              InputField(
+                initialValue: formData['cpf'],
+                onSaved: (val) {
+                  formData['cpf'] = val;
+                },
+                inputFormatters: InputMask.cpfMask(),
+                validator: validator.cpfValidator(),
+                label: "CPF",
+                hint: "Insira CPF",
+              ),
+              const SizedBox(height: 20),
+              InputField(
+                initialValue: formData['telefone'],
+                onSaved: (val) {
+                  formData['telefone'] = val;
+                },
+                inputFormatters: InputMask.phoneMask(),
+                validator: validator.telefoneValidator(),
+                label: "Telefone",
+                hint: "Insira telefone",
+              ),
               const SizedBox(height: 40),
               DropdownButtonFormField(
                 value: formData['gender'],
@@ -124,12 +155,6 @@ class _UserFormState extends State<UserForm> {
                   ),
                 ),
                 hint: const Text("genero"),
-                validator: (val) {
-                  if (val == null) {
-                    return 'Campo obrigatório';
-                  }
-                  return null;
-                },
                 items: const [
                   DropdownMenuItem(value: "nada a declarar", child: Text("nada a declarar")),
                   DropdownMenuItem(value: "masculino", child: Text("masculino")),
@@ -147,15 +172,16 @@ class _UserFormState extends State<UserForm> {
                   Flexible(
                     child: TextFormField(
                       controller: txt,
-                      validator: (val) {
-                        if (val == null || val.isEmpty) {
-                          return 'Campo obrigatório';
-                        }
-                        return null;
-                      },
+                      validator: validator.baseValidator(),
                       onSaved: (val) {
                         formData['birth'] = val;
                       },
+                      inputFormatters: [
+                        TextInputMask(
+                          mask: ['99/99/9999])'],
+                          reverse: false,
+                        )
+                      ],
                       onTap: () async {
                         final date = await showDatePicker(
                           context: context,
@@ -205,6 +231,8 @@ class _UserFormState extends State<UserForm> {
                     birth: DateFormat('dd/MM/yyyy').parse(formData['birth']),
                     private: formData['private'],
                     gender: formData['gender'],
+                    cpf: formData['cpf'],
+                    telefone: formData['telefone'],
                   );
                   details.addDetails(detail);
 

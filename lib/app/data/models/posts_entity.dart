@@ -1,14 +1,14 @@
 import 'package:hive/hive.dart';
 
-part 'posts_entity.g.dart';
+// part 'posts_entity.g.dart';
 
-@HiveType(typeId: 2)
+// @HiveType(typeId: 2)
 class Post extends HiveObject {
-  @HiveField(0)
+  // @HiveField(0)
   final int? id;
-  @HiveField(1)
+  // @HiveField(1)
   int detail;
-  @HiveField(2)
+  // @HiveField(2)
   final String content;
 
   Post({

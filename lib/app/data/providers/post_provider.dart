@@ -1,13 +1,13 @@
-import 'package:crud/app/data/database/posts_database.dart';
 import 'package:crud/app/data/models/posts_entity.dart';
+import 'package:crud/app/data/repository/post_repository.dart';
 import 'package:flutter/material.dart';
 
 class PostProvider with ChangeNotifier {
-  PostsDatabase db = PostsDatabase();
+  PostRepository db = PostRepository();
 
-  List<Post> get posts => db.getPosts();
+  List<Post> get posts => db.fetchPosts();
 
-  int get count => db.getPosts().length;
+  int get count => db.fetchPosts().length;
 
   void addPost(Post post) {
     db.addPost(post);
@@ -24,11 +24,11 @@ class PostProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Post> getByUser(int? id) {
-    return db.getPostsByUser(id);
+  List<Post> getByUser(int id) {
+    return db.fetchPostsByUser(id);
   }
 
-  void deleteByUser(int? id) {
+  void deleteByUser(int id) {
     for (Post p in getByUser(id)) {
       db.deletePost(p.id!);
     }

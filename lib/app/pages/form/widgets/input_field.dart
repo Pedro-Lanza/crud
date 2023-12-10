@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InputField extends StatelessWidget {
   InputField({
@@ -8,23 +9,25 @@ class InputField extends StatelessWidget {
     required this.hint,
     this.onSaved,
     this.initialValue,
+    this.validator,
+    this.inputFormatters,
   });
 
   final String label;
   final String hint;
   final Icon? icon;
-  final initialValue;
-  final onSaved;
+  final String? initialValue;
+  final void Function(String?)? onSaved;
+  final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       initialValue: initialValue,
-      validator: (val) {
-        if (val == null || val.isEmpty) return 'Campo obrigatório';
-        return null;
-      },
+      validator: validator,
       onSaved: onSaved,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         icon: icon,
         labelText: label,

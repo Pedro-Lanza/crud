@@ -1,25 +1,22 @@
-import 'package:crud/app/data/database/user_database.dart';
 import 'package:crud/app/data/models/user_entity.dart';
 import 'package:crud/app/data/providers/details_provider.dart';
+import 'package:crud/app/data/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 
 class UserProvider with ChangeNotifier {
-  final UserDatabase db = UserDatabase();
+  final UserRepository repository = UserRepository();
   final DetailsProvider details = DetailsProvider();
-  int maxId = 0;
 
-  List<User> get users => db.getUsers();
+  List<User> get users => repository.fetchUsers();
 
-  int get maxid => maxId++;
+  int get count => repository.fetchUsers().length;
+
+  int get maxid => repository.fetchUsers().fold<int>(0, (max, e) => e.id! > max ? e.id! : max) + 1;
 
   User? getById(int id) {
     if (id < 0) return null;
-    // return db.getUserBox().get(id);
-    List<User> list = users.where((e) => e.id == id).toList();
-    return list.isEmpty ? null : list[0];
+    return repository.fetchUser(id);
   }
-
-  int get count => db.getUsers().length;
 
   void addUser(User user) {
     if (user.id != null) {
@@ -36,14 +33,14 @@ class UserProvider with ChangeNotifier {
       image: user.image,
       details: user.details,
     );
-    db.addUser(user);
+    repository.addUser(user);
     notifyListeners();
   }
 
   void updateUser(int id, User user) {
     User? u = getById(id);
     if (u != null) {
-      db.updateUser(id, user);
+      repository.updateUser(id, user);
       notifyListeners();
     }
   }
@@ -51,7 +48,7 @@ class UserProvider with ChangeNotifier {
   void deleteUser(int index) {
     User? user = getById(index);
     if (user != null) {
-      db.deleteUser(user.id!);
+      repository.deleteUser(user.id!);
       details.deleteDetails(user.details);
       notifyListeners();
     }

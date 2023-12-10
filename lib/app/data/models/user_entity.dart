@@ -1,18 +1,18 @@
 import 'package:hive/hive.dart';
 
-part 'user_entity.g.dart';
+// part 'user_entity.g.dart';
 
-@HiveType(typeId: 0)
+// @HiveType(typeId: 0)
 class User extends HiveObject {
-  @HiveField(0)
+  // @HiveField(0)
   int? id;
-  @HiveField(1)
+  // @HiveField(1)
   final String name;
-  @HiveField(2)
+  // @HiveField(2)
   final String surName;
-  @HiveField(3)
+  // @HiveField(3)
   final String image;
-  @HiveField(4)
+  // @HiveField(4)
   final int details;
   // final String description;
   // final DateTime birth;
