@@ -1,11 +1,12 @@
 import 'package:crud/app/data/models/details_entity.dart';
+import 'package:crud/app/data/providers/post_provider.dart';
 import 'package:crud/app/data/repository/details_repository.dart';
-import 'package:crud/app/data/repository/post_repository.dart';
 import 'package:flutter/material.dart';
 
 class DetailsProvider with ChangeNotifier {
-  final DetailsRepository repository = DetailsRepository();
-  final PostRepository posts = PostRepository();
+  DetailsProvider({required this.repository, required this.posts});
+  final PostProvider posts; // = PostRepository();
+  final DetailsRepository repository; // = DetailsRepository();
 
   List<Details> get details => repository.fetchDetails();
 

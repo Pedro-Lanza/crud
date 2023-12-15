@@ -4,8 +4,9 @@ import 'package:crud/app/data/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 
 class UserProvider with ChangeNotifier {
-  final UserRepository repository = UserRepository();
-  final DetailsProvider details = DetailsProvider();
+  UserProvider({required this.repository, required this.details});
+  final DetailsProvider details; // = DetailsProvider();
+  final UserRepository repository; // = UserRepository();
 
   List<User> get users => repository.fetchUsers();
 

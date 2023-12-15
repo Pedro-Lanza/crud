@@ -1,8 +1,6 @@
 import 'package:crud/app/data/models/user_entity.dart';
 
 class UserAdapter {
-  UserAdapter();
-
   static User fromMap(Map<dynamic, dynamic> map) {
     return User(
       id: map['id'],

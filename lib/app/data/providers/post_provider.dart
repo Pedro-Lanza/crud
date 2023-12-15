@@ -3,34 +3,35 @@ import 'package:crud/app/data/repository/post_repository.dart';
 import 'package:flutter/material.dart';
 
 class PostProvider with ChangeNotifier {
-  PostRepository db = PostRepository();
+  PostProvider({required this.repository});
+  PostRepository repository; // = PostRepository();
 
-  List<Post> get posts => db.fetchPosts();
+  List<Post> get posts => repository.fetchPosts();
 
-  int get count => db.fetchPosts().length;
+  int get count => repository.fetchPosts().length;
 
   void addPost(Post post) {
-    db.addPost(post);
+    repository.addPost(post);
     notifyListeners();
   }
 
   void updatePost(int index, Post post) {
-    db.updatePost(index, post);
+    repository.updatePost(index, post);
     notifyListeners();
   }
 
   void deletePost(int index) {
-    db.deletePost(index);
+    repository.deletePost(index);
     notifyListeners();
   }
 
   List<Post> getByUser(int id) {
-    return db.fetchPostsByUser(id);
+    return repository.fetchPostsByUser(id);
   }
 
   void deleteByUser(int id) {
     for (Post p in getByUser(id)) {
-      db.deletePost(p.id!);
+      repository.deletePost(p.id!);
     }
   }
 }
