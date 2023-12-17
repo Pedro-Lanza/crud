@@ -8,15 +8,24 @@ class UserProvider with ChangeNotifier {
   final DetailsProvider details; // = DetailsProvider();
   final UserRepository repository; // = UserRepository();
 
-  List<User> get users => repository.fetchUsers();
+  List<User> get users {
+    var request = repository.fetchUsers();
+    return request.fold((l) => [], (r) => r);
+  }
 
-  int get count => repository.fetchUsers().length;
+  int get count {
+    var request = repository.fetchUsers();
+    return request.fold((l) => 0, (r) => r.length);
+  }
 
-  int get maxid => repository.fetchUsers().fold<int>(0, (max, e) => e.id! > max ? e.id! : max) + 1;
+  int get maxid {
+    var request = repository.fetchUsers();
+    return request.fold((l) => 0, (r) => r.fold<int>(0, (max, e) => e.id! > max ? e.id! : max) + 1);
+  }
 
   User? getById(int id) {
-    if (id < 0) return null;
-    return repository.fetchUser(id);
+    var request = repository.fetchUser(id);
+    return request.fold((l) => null, (r) => r);
   }
 
   void addUser(User user) {
