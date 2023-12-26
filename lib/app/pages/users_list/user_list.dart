@@ -2,7 +2,7 @@ import 'package:crud/app/data/models/user_entity.dart';
 import 'package:crud/app/pages/users_list/widgets/user_card.dart';
 import 'package:crud/app/data/providers/user_provider.dart';
 import 'package:crud/app_routes.dart';
-import 'package:dartz/dartz.dart' hide State;
+import 'package:micro_core_result/micro_core_result.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +15,7 @@ class UserList extends StatefulWidget {
 
 class _UserListState extends State<UserList> {
   late UserProvider users;
-  late Either<Exception, List<User>> request;
+  late Result<Exception, List<User>> request;
 
   @override
   void didChangeDependencies() {
@@ -43,8 +43,8 @@ class _UserListState extends State<UserList> {
         ],
       ),
       body: SingleChildScrollView(
-        child: request.fold(
-          (l) => Text(l.toString()),
+        child: request(
+          (l) => displayError(l),
           (r) => Column(
             children: r.map<Widget>((e) => UserCard(user: e)).toList(),
           ),
@@ -57,6 +57,30 @@ class _UserListState extends State<UserList> {
       //   itemCount: users.count,
       //   itemBuilder: (ctx, i) => UserCard(user: users.userlist.elementAt(i)),
       // ),
+    );
+  }
+
+  Widget displayError(Exception error) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            error.toString(),
+            style: const TextStyle(color: Colors.red, fontSize: 16),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            var rqst = users.users;
+            setState(() {
+              request = rqst;
+            });
+          },
+          child: const Text('Retry'),
+        ),
+      ],
     );
   }
 }

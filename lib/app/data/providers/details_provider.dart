@@ -1,7 +1,7 @@
 import 'package:crud/app/data/models/details_entity.dart';
 import 'package:crud/app/data/providers/post_provider.dart';
 import 'package:crud/app/data/repository/details_repository.dart';
-import 'package:dartz/dartz.dart';
+import 'package:micro_core_result/micro_core_result.dart';
 import 'package:flutter/material.dart';
 
 class DetailsProvider with ChangeNotifier {
@@ -9,38 +9,38 @@ class DetailsProvider with ChangeNotifier {
   final PostProvider posts; // = PostRepository();
   final DetailsRepository repository; // = DetailsRepository();
 
-  Either<Exception, List<Details>> get details {
+  Result<Exception, List<Details>> get details {
     var request = repository.fetchDetails();
-    Either<Exception, List<Details>> response = request.fold((l) => Left(l), (r) => Right(r));
+    Result<Exception, List<Details>> response = request((l) => Left(l), (r) => Right(r));
     notifyListeners();
     return response;
   }
 
-  Either<Exception, Details> getByUser(int id) {
+  Result<Exception, Details> getByUser(int id) {
     var request = repository.fetchByUser(id);
-    Either<Exception, Details> response = request.fold((l) => Left(l), (r) => Right(r));
+    Result<Exception, Details> response = request((l) => Left(l), (r) => Right(r));
     // notifyListeners();
     return response;
   }
 
-  Either<Exception, Details> addDetails(Details details) {
+  Result<Exception, Details> addDetails(Details details) {
     var request = repository.addDetails(details);
-    Either<Exception, Details> response = request.fold((l) => Left(l), (r) => Right(r));
+    Result<Exception, Details> response = request((l) => Left(l), (r) => Right(r));
     notifyListeners();
     return response;
   }
 
-  Either<Exception, Details> updateDetails(int index, Details details) {
+  Result<Exception, Details> updateDetails(int index, Details details) {
     var request = repository.updateDetails(index, details);
-    Either<Exception, Details> response = request.fold((l) => Left(l), (r) => Right(r));
+    Result<Exception, Details> response = request((l) => Left(l), (r) => Right(r));
     notifyListeners();
     return response;
   }
 
-  Either<Exception, int> deleteDetails(int id) {
+  Result<Exception, int> deleteDetails(int id) {
     posts.deleteByUser(id);
     var request = repository.deleteDetails(id);
-    Either<Exception, int> response = request.fold((l) => Left(l), (r) => Right(r));
+    Result<Exception, int> response = request((l) => Left(l), (r) => Right(r));
     notifyListeners();
     return response;
   }

@@ -95,7 +95,7 @@ class _UserCardState extends State<UserCard> {
                     (value) {
                       if (value) {
                         var request = users.deleteUser(widget.user.id!);
-                        request.fold((l) async => await _showErrorDialog(context, l.toString()), (r) => null);
+                        request((l) async => await _showErrorDialog(context, l.toString()), (r) => null);
                       }
                     },
                   );

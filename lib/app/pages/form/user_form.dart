@@ -33,7 +33,7 @@ class _UserFormState extends State<UserForm> {
   void _loadFormData(User? user) {
     if (user == null) {
       var request = users.maxid;
-      var maxid = request.fold((l) {
+      var maxid = request((l) {
         setState(() {
           error = l;
         });
@@ -49,7 +49,7 @@ class _UserFormState extends State<UserForm> {
 
     Details detail;
     var request = details.getByUser(user.id!);
-    var response = request.fold((l) {
+    var response = request((l) {
       setState(() {
         error = l;
       });
@@ -307,7 +307,7 @@ class _UserFormState extends State<UserForm> {
                 telefone: formData['telefone'],
               );
               var requestDetails = details.addDetails(detail);
-              requestDetails.fold(
+              requestDetails(
                 (l) async => await _showErrorDialog(context, l.toString()),
                 (r) => null,
               );
@@ -320,7 +320,7 @@ class _UserFormState extends State<UserForm> {
                 details: detail.id!,
               );
               var requestUser = users.addUser(usr);
-              requestUser.fold(
+              requestUser(
                 (l) async => await _showErrorDialog(context, l.toString()),
                 (r) => Navigator.of(context).pop(),
               );

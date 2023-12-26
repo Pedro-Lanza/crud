@@ -1,35 +1,35 @@
 import 'package:crud/app/data/models/user_entity.dart';
 import 'package:crud/app/data/providers/details_provider.dart';
 import 'package:crud/app/data/repository/user_repository.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_core_result/micro_core_result.dart';
 
 class UserProvider with ChangeNotifier {
   UserProvider({required this.repository, required this.details});
   final DetailsProvider details; // = DetailsProvider();
   final UserRepository repository; // = UserRepository();
 
-  Either<Exception, List<User>> get users {
+  Result<Exception, List<User>> get users {
     var request = repository.fetchUsers();
-    return request.fold((l) => Left(l), (r) => Right(r));
+    return request((l) => Left(l), (r) => Right(r));
   }
 
-  Either<Exception, int> get count {
+  Result<Exception, int> get count {
     var request = repository.fetchUsers();
-    return request.fold((l) => Left(l), (r) => Right(r.length));
+    return request((l) => Left(l), (r) => Right(r.length));
   }
 
-  Either<Exception, int> get maxid {
+  Result<Exception, int> get maxid {
     var request = repository.fetchUsers();
-    return request.fold((l) => Left(l), (r) => Right(r.fold<int>(0, (max, e) => e.id! > max ? e.id! : max) + 1));
+    return request((l) => Left(l), (r) => Right(r.fold<int>(0, (max, e) => e.id! > max ? e.id! : max) + 1));
   }
 
-  Either<Exception, User> getById(int id) {
+  Result<Exception, User> getById(int id) {
     var request = repository.fetchUser(id);
-    return request.fold((l) => Left(l), (r) => Right(r));
+    return request((l) => Left(l), (r) => Right(r));
   }
 
-  Either<Exception, User> addUser(User user) {
+  Result<Exception, User> addUser(User user) {
     // if (user.id != null) {
     //   if (getById(user.id!) != null) {
     //     updateUser(user.id!, user);
@@ -37,7 +37,7 @@ class UserProvider with ChangeNotifier {
     //   }
     // }
     var checkUser = updateUser(user.id!, user);
-    var exists = checkUser.fold((l) => false, (r) => true);
+    var exists = checkUser((l) => false, (r) => true);
     if (exists) return Right(user);
 
     user = User(
@@ -48,18 +48,18 @@ class UserProvider with ChangeNotifier {
       details: user.details,
     );
     var request = repository.addUser(user);
-    Either<Exception, User> response = request.fold((l) => Left(l), (r) => Right(r));
+    Result<Exception, User> response = request((l) => Left(l), (r) => Right(r));
     notifyListeners();
     return response;
   }
 
-  Either<Exception, User> updateUser(int id, User user) {
+  Result<Exception, User> updateUser(int id, User user) {
     var check = getById(id);
-    var exists = check.fold((l) => l, (r) => true);
+    var exists = check((l) => l, (r) => true);
     if (exists != true) return Left(exists as Exception);
 
     var request = repository.updateUser(id, user);
-    Either<Exception, User> response = request.fold((l) => Left(l), (r) => Right(r));
+    Result<Exception, User> response = request((l) => Left(l), (r) => Right(r));
     notifyListeners();
     return response;
     // if (u != null) {
@@ -68,13 +68,13 @@ class UserProvider with ChangeNotifier {
     // }
   }
 
-  Either<Exception, int> deleteUser(int id) {
+  Result<Exception, int> deleteUser(int id) {
     var deleteDetails = details.deleteDetails(id);
-    var deleted = deleteDetails.fold((l) => l, (r) => true);
+    var deleted = deleteDetails((l) => l, (r) => true);
     if (deleted != true) return Left(deleted as Exception);
 
     var request = repository.deleteUser(id);
-    Either<Exception, int> response = request.fold((l) => Left(l), (r) => Right(r));
+    Result<Exception, int> response = request((l) => Left(l), (r) => Right(r));
     notifyListeners();
     return response;
     // if (user != null) {

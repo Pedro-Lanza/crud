@@ -28,8 +28,8 @@ class _UserProfileState extends State<UserProfile> {
     details = Provider.of(context);
     posts = Provider.of(context, listen: true);
     user = ModalRoute.of(context)!.settings.arguments as User;
-    var requestDetails = details.getByUser(user!.id!);
-    requestDetails.fold((l) {
+    var requestDetails = details.getByUser(user.id!);
+    requestDetails((l) {
       setState(() {
         error = l;
       });
@@ -41,7 +41,7 @@ class _UserProfileState extends State<UserProfile> {
     if (error != null) return;
 
     var requestPosts = posts.getByUser(detail.id!);
-    requestPosts.fold((l) => error = l, (r) {
+    requestPosts((l) => error = l, (r) {
       setState(() {
         postList = r.map<Widget>(
           (e) {
@@ -78,7 +78,7 @@ class _UserProfileState extends State<UserProfile> {
                     posts.addPost(
                       Post(
                         id: postList.length,
-                        detail: detail!.id!,
+                        detail: detail.id!,
                         content: 'new post',
                       ),
                     );
