@@ -6,8 +6,8 @@ class DetailsAdapter {
 
   static Details fromMap(Map<dynamic, dynamic> map) {
     return Details(
-      id: AppMapper.parse('id', map['id']),
-      user: AppMapper.parse('user', map['user']),
+      id: AppMapper.parse('id', () => map['id']),
+      user: AppMapper.parse('user', () => map['user']),
       description: AppMapper.parse('description', () => map['description']),
       birth: AppMapper.parse('birth', () => map['birth']),
       private: AppMapper.parse('private', () => map['private']),

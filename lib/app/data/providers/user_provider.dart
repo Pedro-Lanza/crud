@@ -1,10 +1,9 @@
 import 'package:crud/app/data/models/user_entity.dart';
 import 'package:crud/app/data/providers/details_provider.dart';
 import 'package:crud/app/data/repository/user_repository.dart';
-import 'package:flutter/material.dart';
 import 'package:micro_core_result/micro_core_result.dart';
 
-class UserProvider with ChangeNotifier {
+class UserProvider {
   UserProvider({required this.repository, required this.details});
   final DetailsProvider details; // = DetailsProvider();
   final UserRepository repository; // = UserRepository();
@@ -49,7 +48,6 @@ class UserProvider with ChangeNotifier {
     );
     var request = repository.addUser(user);
     Result<Exception, User> response = request((l) => Left(l), (r) => Right(r));
-    notifyListeners();
     return response;
   }
 
@@ -60,7 +58,6 @@ class UserProvider with ChangeNotifier {
 
     var request = repository.updateUser(id, user);
     Result<Exception, User> response = request((l) => Left(l), (r) => Right(r));
-    notifyListeners();
     return response;
     // if (u != null) {
     //   repository.updateUser(id, user);
@@ -75,7 +72,6 @@ class UserProvider with ChangeNotifier {
 
     var request = repository.deleteUser(id);
     Result<Exception, int> response = request((l) => Left(l), (r) => Right(r));
-    notifyListeners();
     return response;
     // if (user != null) {
     //   repository.deleteUser(user.id!);

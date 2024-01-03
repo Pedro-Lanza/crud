@@ -1,5 +1,7 @@
 import 'package:crud/app/data/models/user_entity.dart';
 import 'package:crud/app/data/providers/user_provider.dart';
+import 'package:crud/app/pages/users_list/bloc/userslist_bloc.dart';
+import 'package:crud/app/pages/users_list/bloc/userslist_event.dart';
 import 'package:crud/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,10 +67,14 @@ class _UserCardState extends State<UserCard> {
             children: [
               IconButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(
-                      AppRoutes.form,
-                      arguments: widget.user,
-                    );
+                    Navigator.of(context)
+                        .pushNamed(
+                          AppRoutes.form,
+                          arguments: widget.user,
+                        )
+                        .then(
+                          (value) => context.read<ListBloc>().add(FetchUsers()),
+                        );
                   },
                   icon: const Icon(Icons.edit)),
               IconButton(
@@ -94,8 +100,9 @@ class _UserCardState extends State<UserCard> {
                   ).then(
                     (value) {
                       if (value) {
-                        var request = users.deleteUser(widget.user.id!);
-                        request((l) async => await _showErrorDialog(context, l.toString()), (r) => null);
+                        context.read<ListBloc>().add(DeleteUser(context, widget.user.id!));
+                        // var request = users.deleteUser(widget.user.id!);
+                        // request((l) async => await _showErrorDialog(context, l.toString()), (r) => null);
                       }
                     },
                   );
@@ -106,33 +113,6 @@ class _UserCardState extends State<UserCard> {
           ),
         ],
       ),
-    );
-  }
-
-  Future<void> _showErrorDialog(BuildContext context, String message) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // User must tap button to close dialog
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(message),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Tentar Novamente'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

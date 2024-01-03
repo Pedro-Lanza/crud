@@ -1,9 +1,8 @@
 import 'package:crud/app/data/models/posts_entity.dart';
 import 'package:crud/app/data/repository/post_repository.dart';
 import 'package:micro_core_result/micro_core_result.dart';
-import 'package:flutter/material.dart';
 
-class PostProvider with ChangeNotifier {
+class PostProvider {
   PostProvider({required this.repository});
   PostRepository repository; // = PostRepository();
 
@@ -20,21 +19,21 @@ class PostProvider with ChangeNotifier {
   Result<Exception, Post> addPost(Post post) {
     var request = repository.addPost(post);
     Result<Exception, Post> response = request((l) => Left(l), (r) => Right(r));
-    notifyListeners();
+    // notifyListeners();
     return response;
   }
 
   Result<Exception, Post> updatePost(int index, Post post) {
     var request = repository.updatePost(index, post);
     Result<Exception, Post> response = request((l) => Left(l), (r) => Right(r));
-    notifyListeners();
+    // notifyListeners();
     return response;
   }
 
   Result<Exception, int> deletePost(int index) {
     var request = repository.deletePost(index);
     Result<Exception, int> response = request((l) => Left(l), (r) => Right(r));
-    notifyListeners();
+    // notifyListeners();
     return response;
   }
 
