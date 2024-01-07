@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ProfileErrorWidget extends StatelessWidget {
   final Exception error;
 
-  const ProfileErrorWidget(this.error, {super.key});
+  const ProfileErrorWidget({required this.error, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class ProfileErrorWidget extends StatelessWidget {
 class PostsErrorWidget extends StatelessWidget {
   final User user;
   final Exception error;
-  const PostsErrorWidget(this.error, this.user, {super.key});
+  const PostsErrorWidget({super.key, required this.user, required this.error});
 
   @override
   Widget build(BuildContext context) {

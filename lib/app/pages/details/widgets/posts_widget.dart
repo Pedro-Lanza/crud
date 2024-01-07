@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PostsWidget extends StatelessWidget {
   final User user;
   final List<Post> postList;
-  const PostsWidget(this.postList, this.user, {super.key});
+  const PostsWidget({super.key, required this.user, required this.postList});
 
   @override
   Widget build(BuildContext context) {

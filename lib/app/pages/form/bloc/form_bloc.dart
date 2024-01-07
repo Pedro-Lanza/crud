@@ -4,9 +4,7 @@ import 'package:crud/app/data/providers/details_provider.dart';
 import 'package:crud/app/data/providers/user_provider.dart';
 import 'package:crud/app/pages/form/bloc/form_event.dart';
 import 'package:crud/app/pages/form/bloc/form_state.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:micro_core_result/micro_core_result.dart';
 
 class FormBloc extends Bloc<FormEvent, FormStates> {
@@ -21,14 +19,17 @@ class FormBloc extends Bloc<FormEvent, FormStates> {
   Future<void> _onAddUser(AddUser event, Emitter<FormStates> emit) async {
     var requestDetails = detailsProvider.addDetails(event.details);
     requestDetails(
-      (l) async => await _showErrorDialog(event.context, l.toString()),
+      (l) {
+        emit(DialogForm(l));
+        return;
+      },
       (r) => null,
     );
 
     var requestUser = userProvider.addUser(event.user);
     requestUser(
-      (l) async => await _showErrorDialog(event.context, l.toString()),
-      (r) => Navigator.of(event.context).pop(),
+      (l) => emit(DialogForm(l)),
+      (r) => emit(SuccessfulForm()),
     );
   }
 
@@ -38,11 +39,9 @@ class FormBloc extends Bloc<FormEvent, FormStates> {
     form(
       (l) => emit(ErrorForm(l)),
       (r) {
-        var txt = TextEditingController(text: r['birth'] != null ? DateFormat("dd/MM/yyyy").format(r['birth']) : null);
-        emit(LoadedForm(r, txt));
+        emit(LoadedForm(r));
       },
     );
-    // if (form == null) emit(ErrorList(error))
   }
 
   Result<Exception, Map<String, dynamic>> _loadFormData(User? user) {
@@ -83,32 +82,5 @@ class FormBloc extends Bloc<FormEvent, FormStates> {
     formData['telefone'] = detail.telefone;
 
     return Right(formData);
-  }
-
-  Future<void> _showErrorDialog(BuildContext context, String message) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // User must tap button to close dialog
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(message),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Tentar Novamente'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 }

@@ -1,7 +1,11 @@
 import 'package:crud/app/data/models/details_entity.dart';
 import 'package:crud/app/data/models/user_entity.dart';
 import 'package:crud/app/pages/details/bloc/details_bloc.dart';
+import 'package:crud/app/pages/details/bloc/details_event.dart';
 import 'package:crud/app/pages/details/bloc/details_state.dart';
+import 'package:crud/app/pages/details/widgets/error_widget.dart';
+import 'package:crud/app/pages/details/widgets/ploading_widget.dart';
+import 'package:crud/app/pages/details/widgets/posts_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -90,8 +94,14 @@ class ProfileWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 30),
-        BlocBuilder<PostsBloc, DetailsState>(
-          builder: (context, state) => state.render(),
+        BlocBuilder<PostsBloc, PostsState>(
+          builder: (context, state) {
+            return switch (state) {
+              LoadingPosts() || SuccessPost() => const PostLoading(),
+              LoadedPosts() => PostsWidget(postList: state.posts, user: state.user),
+              ErrorPosts() => PostsErrorWidget(error: state.error, user: state.user),
+            };
+          },
         ),
       ],
     );

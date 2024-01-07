@@ -1,65 +1,71 @@
-import 'package:crud/app/data/models/details_entity.dart';
 import 'package:crud/app/data/models/user_entity.dart';
-import 'package:crud/app/data/providers/details_provider.dart';
-import 'package:crud/app/data/providers/post_provider.dart';
 import 'package:crud/app/pages/details/bloc/details_bloc.dart';
 import 'package:crud/app/pages/details/bloc/details_event.dart';
 import 'package:crud/app/pages/details/bloc/details_state.dart';
+import 'package:crud/app/pages/details/widgets/error_widget.dart';
+import 'package:crud/app/pages/details/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+  const UserProfile({super.key, required this.detailsBloc, required this.postsBloc});
+  final DetailsBloc detailsBloc;
+  final PostsBloc postsBloc;
 
   @override
   State<UserProfile> createState() => _UserProfileState();
 }
 
 class _UserProfileState extends State<UserProfile> {
-  late DetailsProvider details;
-  late PostProvider posts;
   late User user;
-  late Details detail;
-  late List<Widget> postList;
-  Exception? error;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     user = ModalRoute.of(context)!.settings.arguments as User;
-    context.read<DetailsBloc>().add(FetchDetails(user));
-    context.read<PostsBloc>().add(FetchPosts(user));
+    widget.detailsBloc.add(FetchDetails(user));
+    widget.postsBloc.add(FetchPosts(user));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DetailsBloc, DetailsState>(
-      builder: (context, state) => Scaffold(
-        appBar: AppBar(),
-        body: state.render(),
+    return Scaffold(
+      appBar: AppBar(),
+      body: BlocBuilder<DetailsBloc, DetailsState>(
+        builder: (context, state) {
+          return switch (state) {
+            LoadingDetails() => const CircularProgressIndicator(),
+            LoadedDetails() => ProfileWidget(user: state.user, detail: state.details),
+            ErrorDetails() => ProfileErrorWidget(error: state.error),
+          };
+        },
       ),
     );
   }
 
-  Widget displayError() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Align(
-          alignment: Alignment.center,
-          child: Text(
-            error.toString(),
-            style: const TextStyle(color: Colors.red, fontSize: 16),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Retry'),
-        ),
-      ],
-    );
-  }
+  // Widget displayError() {
+  //   return Column(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Align(
+  //         alignment: Alignment.center,
+  //         child: Text(
+  //           error.toString(),
+  //           style: const TextStyle(color: Colors.red, fontSize: 16),
+  //         ),
+  //       ),
+  //       ElevatedButton(
+  //         onPressed: () {
+  //           Navigator.of(context).pop();
+  //         },
+  //         child: const Text('Retry'),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

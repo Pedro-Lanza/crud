@@ -27,7 +27,9 @@ class CrudApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<ListBloc>(create: (ctx) => ListBloc(provider: ctx.read<UserProvider>())),
+          BlocProvider<ListBloc>(
+            create: (ctx) => ListBloc(provider: ctx.read<UserProvider>()),
+          ),
           BlocProvider<FormBloc>(
             create: (ctx) => FormBloc(
               userProvider: ctx.read<UserProvider>(),
@@ -47,11 +49,14 @@ class CrudApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent, brightness: Brightness.dark),
           ),
           debugShowCheckedModeBanner: false,
-          home: const UserList(),
+          initialRoute: AppRoutes.home,
           routes: {
-            AppRoutes.home: (_) => const UserList(),
-            AppRoutes.form: (_) => const UserForm(),
-            AppRoutes.details: (_) => const UserProfile(),
+            AppRoutes.home: (ctx) => UserList(bloc: ctx.read<ListBloc>()),
+            AppRoutes.form: (ctx) => UserForm(bloc: ctx.read<FormBloc>()),
+            AppRoutes.details: (ctx) => UserProfile(
+                  detailsBloc: ctx.read<DetailsBloc>(),
+                  postsBloc: ctx.read<PostsBloc>(),
+                ),
           },
         ),
       ),

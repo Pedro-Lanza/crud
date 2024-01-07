@@ -16,12 +16,12 @@ class UserCard extends StatefulWidget {
 }
 
 class _UserCardState extends State<UserCard> {
-  late UserProvider users;
+  // late UserProvider users;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    users = Provider.of(context, listen: false);
+    // users = Provider.of(context, listen: false);
   }
 
   @override

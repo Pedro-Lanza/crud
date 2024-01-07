@@ -15,10 +15,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     emit(LoadingDetails());
     var details = detailsProvider.getByUser(event.user.id!);
     details(
-      (l) {
-        emit(ErrorDetails(l));
-        return;
-      },
+      (l) => emit(ErrorDetails(l)),
       (r) => emit(LoadedDetails(event.user, r)),
     );
 
@@ -30,14 +27,14 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 }
 
-class PostsBloc extends Bloc<DetailsEvent, DetailsState> {
-  PostsBloc({required this.postProvider}) : super(LoadingDetails()) {
+class PostsBloc extends Bloc<DetailsEvent, PostsState> {
+  PostsBloc({required this.postProvider}) : super(LoadingPosts()) {
     on<FetchPosts>(_onFetchPosts);
     on<AddPost>(_onAddPost);
   }
   final PostProvider postProvider;
 
-  Future<void> _onFetchPosts(FetchPosts event, Emitter<DetailsState> emit) async {
+  Future<void> _onFetchPosts(FetchPosts event, Emitter<PostsState> emit) async {
     emit(LoadingPosts());
     var request = postProvider.getByUser(event.user.id!);
     request(
@@ -46,7 +43,7 @@ class PostsBloc extends Bloc<DetailsEvent, DetailsState> {
     );
   }
 
-  Future<void> _onAddPost(AddPost event, Emitter<DetailsState> emit) async {
+  Future<void> _onAddPost(AddPost event, Emitter<PostsState> emit) async {
     var request = postProvider.addPost(event.post);
     request(
       (l) => emit(ErrorPosts(event.user, l)),
