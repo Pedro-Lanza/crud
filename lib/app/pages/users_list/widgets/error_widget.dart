@@ -1,7 +1,7 @@
 import 'package:crud/app/pages/users_list/bloc/userslist_bloc.dart';
 import 'package:crud/app/pages/users_list/bloc/userslist_event.dart';
+import 'package:crud/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ListErrorWidget extends StatelessWidget {
   const ListErrorWidget({super.key, required this.error});
@@ -21,7 +21,7 @@ class ListErrorWidget extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            context.read<ListBloc>().add(FetchUsers());
+            getIt<ListBloc>().add(FetchUsers());
           },
           child: const Text('Retry'),
         ),

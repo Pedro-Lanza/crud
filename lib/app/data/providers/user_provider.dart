@@ -4,9 +4,9 @@ import 'package:crud/app/data/repository/user_repository.dart';
 import 'package:micro_core_result/micro_core_result.dart';
 
 class UserProvider {
-  UserProvider({required this.repository, required this.details});
+  UserProvider({required this.details});
   final DetailsProvider details; // = DetailsProvider();
-  final UserRepository repository; // = UserRepository();
+  final UserRepository repository = UserRepository();
 
   Result<Exception, List<User>> get users {
     var request = repository.fetchUsers();

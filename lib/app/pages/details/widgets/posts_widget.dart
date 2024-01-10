@@ -2,8 +2,8 @@ import 'package:crud/app/data/models/posts_entity.dart';
 import 'package:crud/app/data/models/user_entity.dart';
 import 'package:crud/app/pages/details/bloc/details_bloc.dart';
 import 'package:crud/app/pages/details/bloc/details_event.dart';
+import 'package:crud/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostsWidget extends StatelessWidget {
   final User user;
@@ -20,16 +20,16 @@ class PostsWidget extends StatelessWidget {
             const Text('Posts', style: TextStyle(fontSize: 40)),
             IconButton(
               onPressed: () {
-                context.read<PostsBloc>().add(
-                      AddPost(
-                        Post(
-                          id: postList.length,
-                          detail: user.id!,
-                          content: 'new post',
-                        ),
-                        user,
-                      ),
-                    );
+                getIt<PostsBloc>().add(
+                  AddPost(
+                    Post(
+                      id: postList.length,
+                      detail: user.id!,
+                      content: 'new post',
+                    ),
+                    user,
+                  ),
+                );
               },
               icon: const Icon(Icons.add),
             ),

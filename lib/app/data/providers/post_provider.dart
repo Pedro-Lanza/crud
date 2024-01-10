@@ -3,8 +3,8 @@ import 'package:crud/app/data/repository/post_repository.dart';
 import 'package:micro_core_result/micro_core_result.dart';
 
 class PostProvider {
-  PostProvider({required this.repository});
-  PostRepository repository; // = PostRepository();
+  PostProvider(); //{required this.repository});
+  PostRepository repository = PostRepository();
 
   Result<Exception, List<Post>> get posts {
     var request = repository.fetchPosts();

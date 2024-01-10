@@ -4,24 +4,33 @@ import 'package:crud/app/pages/form/bloc/form_event.dart';
 import 'package:crud/app/pages/form/bloc/form_state.dart';
 import 'package:crud/app/pages/form/widgets/error_widget.dart';
 import 'package:crud/app/pages/form/widgets/form_widget.dart';
+import 'package:crud/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserForm extends StatefulWidget {
-  const UserForm({super.key, required this.bloc});
-  final FormBloc bloc;
+  const UserForm({super.key});
 
   @override
   State<UserForm> createState() => _UserFormState();
 }
 
 class _UserFormState extends State<UserForm> {
+  late FormBloc bloc;
+  User? user;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final user = ModalRoute.of(context)!.settings.arguments as User?;
+    user = ModalRoute.of(context)!.settings.arguments as User?;
+    bloc = getIt<FormBloc>();
 
-    widget.bloc.add(LoadForm(user));
+    bloc.add(LoadForm(user));
   }
 
   @override
@@ -38,8 +47,9 @@ class _UserFormState extends State<UserForm> {
             Navigator.of(context).pop();
           }
         },
-        bloc: widget.bloc,
+        bloc: bloc,
         child: BlocBuilder<FormBloc, FormStates>(
+          bloc: bloc,
           builder: (context, state) {
             return Padding(
               padding: const EdgeInsets.all(8.0),

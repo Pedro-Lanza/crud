@@ -1,10 +1,9 @@
 import 'package:crud/app/data/models/user_entity.dart';
-import 'package:crud/app/data/providers/user_provider.dart';
 import 'package:crud/app/pages/users_list/bloc/userslist_bloc.dart';
 import 'package:crud/app/pages/users_list/bloc/userslist_event.dart';
 import 'package:crud/app_routes.dart';
+import 'package:crud/main.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class UserCard extends StatefulWidget {
   final User user;
@@ -73,7 +72,7 @@ class _UserCardState extends State<UserCard> {
                           arguments: widget.user,
                         )
                         .then(
-                          (value) => context.read<ListBloc>().add(FetchUsers()),
+                          (value) => getIt<ListBloc>().add(FetchUsers()),
                         );
                   },
                   icon: const Icon(Icons.edit)),
@@ -100,7 +99,7 @@ class _UserCardState extends State<UserCard> {
                   ).then(
                     (value) {
                       if (value) {
-                        context.read<ListBloc>().add(DeleteUser(context, widget.user.id!));
+                        getIt<ListBloc>().add(DeleteUser(widget.user.id!));
                         // var request = users.deleteUser(widget.user.id!);
                         // request((l) async => await _showErrorDialog(context, l.toString()), (r) => null);
                       }

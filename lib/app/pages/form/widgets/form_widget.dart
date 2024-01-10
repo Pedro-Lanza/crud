@@ -5,9 +5,9 @@ import 'package:crud/app/pages/form/bloc/form_bloc.dart';
 import 'package:crud/app/pages/form/bloc/form_event.dart';
 import 'package:crud/app/pages/form/widgets/input_field.dart';
 import 'package:crud/app/validators/input_validators.dart';
+import 'package:crud/main.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_validator/flutter_validator.dart';
 import 'package:intl/intl.dart';
 
@@ -207,7 +207,7 @@ class _FormWidgetState extends State<FormWidget> {
                   details: detail.id!,
                 );
 
-                context.read<FormBloc>().add(AddUser(usr, detail, context));
+                getIt<FormBloc>().add(AddUser(usr, detail));
               },
             ),
           ],

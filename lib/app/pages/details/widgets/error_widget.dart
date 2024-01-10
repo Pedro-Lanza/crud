@@ -1,8 +1,8 @@
 import 'package:crud/app/data/models/user_entity.dart';
 import 'package:crud/app/pages/details/bloc/details_bloc.dart';
 import 'package:crud/app/pages/details/bloc/details_event.dart';
+import 'package:crud/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileErrorWidget extends StatelessWidget {
   final Exception error;
@@ -51,7 +51,7 @@ class PostsErrorWidget extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            context.read<PostsBloc>().add(FetchPosts(user));
+            getIt<PostsBloc>().add(FetchPosts(user));
           },
           child: const Text('Retry'),
         ),

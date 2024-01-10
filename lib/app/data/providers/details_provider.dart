@@ -4,9 +4,9 @@ import 'package:crud/app/data/repository/details_repository.dart';
 import 'package:micro_core_result/micro_core_result.dart';
 
 class DetailsProvider {
-  DetailsProvider({required this.repository, required this.posts});
+  DetailsProvider({required this.posts});
   final PostProvider posts; // = PostRepository();
-  final DetailsRepository repository; // = DetailsRepository();
+  final DetailsRepository repository = DetailsRepository();
 
   Result<Exception, List<Details>> get details {
     var request = repository.fetchDetails();
