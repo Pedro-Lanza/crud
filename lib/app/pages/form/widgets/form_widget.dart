@@ -208,6 +208,7 @@ class _FormWidgetState extends State<FormWidget> {
                 );
 
                 getIt<FormBloc>().add(AddUser(usr, detail));
+                Navigator.of(context).pop();
               },
             ),
           ],
